@@ -12,16 +12,21 @@ server.mount_proc( '/time_stream' ) do |req, res|
   res.body = r
   res.chunked = true
   t = Thread.new do
-    20.times do
-      Thread.pass
-      w << 'data: ' << Time.now.to_s << "\x0D\x0A"
+    begin
+      20.times do
+        w << 'data: ' << Time.now.to_s << "\x0D\x0A"
+        w << "\x0D\x0A"
+        sleep 1
+      end
+      w << 'event: end' << "\x0D\x0A"
+      w << 'data: end'  << "\x0D\x0A"
       w << "\x0D\x0A"
-      sleep 1
+    rescue => err
+      # 接続断で r 側が閉じられた場合に w への書き込みを行おうとすると
+      # Errno::EPIPE エラー
+    ensure
+      w.close()
     end
-    w << 'event: end' << "\x0D\x0A"
-    w << 'data: end' << "\x0D\x0A"
-    w << "\x0D\x0A"
-    w.close()
   end
 end
 
