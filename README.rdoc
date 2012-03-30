@@ -1,0 +1,31 @@
+= SSE on WEBrick [sample]
+
+Server-Sent Events のサンプルです. 
+サーバーは Ruby の WEBrick で実装され, クライアント側は JavaScript です.
+
+== 実行方法
+
+まず clone してください. 
+
+  $ git clone https://github.com/nobuoka/sample.SSE-on-WEBrick.git
+  $ cd sample.SSE-on-WEBrick
+
+次に, server.rb を実行して, サーバーを動かします. 
+
+  $ ruby server.rb
+
+このサーバーはポート番号 8000 でリクエストを待ち受けます. 
+Firefox などで http://localhost:8000/ にアクセスすると, 
+\http://localhost:8000/time_stream をターゲットとする EventSource オブジェクトが作られます. 
+\http://localhost:8000/time_stream は 1 秒おきに現在時刻を送ってくるもので, 
+クライアント側は現在時刻を受け取った後にそれを画面に表示します. 
+
+== 動作環境
+
+Ruby 1.9.3-p125, Firefox 11 で動作することを確認しました. 
+
+== 注意点
+
+WEBrick::HTTPServer に http://bugs.ruby-lang.org/issues/6230 のパッチを当てて使っています. 
+lib/webrick/httpserver.rb にパッチを当てた後のファイルが存在し, 
+server.rb はこのファイルを使うようになっています. 
