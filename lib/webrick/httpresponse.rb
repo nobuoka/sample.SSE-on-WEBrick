@@ -340,7 +340,7 @@ module WEBrick
               _write_data(socket, data)
               @sent_size += buf.bytesize
             end
-          resuce EOFError # do nothing
+          rescue EOFError # do nothing
           end
           _write_data(socket, "0#{CRLF}#{CRLF}")
         else
