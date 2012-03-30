@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>test</title>
+  </head>
+  <body>
+    <pre id="msg"></pre>
+    <script>
+      var puts = function puts( str ) {
+          var e = document.getElementById( "msg" );
+          if ( e ) { e.textContent += str + "\n" }
+      };
+      var handleMessage = function handleMessage( evt ) {
+          puts( evt.data );
+      };
+      var handleEnd = function handleEnd( evt ) {
+          puts( evt.data );
+          evt.currentTarget.close();
+      }
+
+      var source = new EventSource( '/time_stream' );
+      source.addEventListener( 'message', handleMessage, false );
+      source.addEventListener( 'end'    , handleEnd    , false );
+    </script>
+  </body>
+</html>
